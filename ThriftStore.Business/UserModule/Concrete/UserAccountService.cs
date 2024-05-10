@@ -69,14 +69,10 @@ namespace ThriftStore.Business.UserModule.Concrete
                     CreatedDate = DateTime.Now,
                     Email = model.Email,
                     EmailConfirmed = false,
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
+                    FullName = model.FullName,
                     LockoutEnabled = true,
                     PhoneNumberConfirmed = false,
                     UserName = model.Email,
-                    Address = model.Address,
-                    Gender = model.Gender,
-                    DateOfBirth = model.DateOfBirth,
                     PhoneNumber = model.Phone
                 };
 

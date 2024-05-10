@@ -139,7 +139,7 @@ namespace ThriftStore.Business.CategoryModule.Concrete
 						ItemName = item.ItemName,
 						Description = item.Description,
 						Price = item.Price,
-						UploadedBy = appUser.FirstName + " " + appUser.LastName,
+						UploadedBy = appUser.FullName,
 						CreatedDate = DateTime.Now
 					},
 					IsSuccessful = true,
