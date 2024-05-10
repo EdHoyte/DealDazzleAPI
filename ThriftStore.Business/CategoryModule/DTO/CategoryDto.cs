@@ -10,6 +10,7 @@ namespace ThriftStore.Business.CategoryModule.DTO
     {
         public string CategoryName { get; set; }
         public Object T {  get; set; }
+        public Object U { get; set; }
 
     }
 }
