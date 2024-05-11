@@ -26,7 +26,16 @@ namespace ThriftStore.API.Controllers
         public async Task<IActionResult> CreateUser(CreateUserAccountDto model)
         {
 
-            var result = await _userAccountService.CreateUserAccount(model);
+            var result = await _userAccountService.CreateUserAccount(model, false);
+            return StatusCode((int)result.StatusCode, result);
+
+        }
+
+        [HttpPost("create-admin")]
+        public async Task<IActionResult> CreateAdmin(CreateUserAccountDto model)
+        {
+
+            var result = await _userAccountService.CreateUserAccount(model, true);
             return StatusCode((int)result.StatusCode, result);
 
         }

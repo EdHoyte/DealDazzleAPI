@@ -57,7 +57,7 @@ namespace ThriftStore.Business.UserModule.Concrete
             }
         }
 
-        public async Task<ApiResult<CreateUserAccountResponseDto>> CreateUserAccount(CreateUserAccountDto model)
+        public async Task<ApiResult<CreateUserAccountResponseDto>> CreateUserAccount(CreateUserAccountDto model, bool isAdmin)
         {
             ApiResult<CreateUserAccountResponseDto> result = new() { Result = new(), StatusCode = System.Net.HttpStatusCode.BadRequest };
             try
@@ -84,10 +84,10 @@ namespace ThriftStore.Business.UserModule.Concrete
                     return result;
                 }
                 //Check if a Role called User is in existence. If not, create it
-                ApplicationRole applicationRole = await _roleManager.FindByNameAsync(model.Role);
+                ApplicationRole applicationRole = await _roleManager.FindByNameAsync(isAdmin ? "Admin" : "User");
                 if (applicationRole == null)
                 {
-                    applicationRole = new() { Name = model.Role };
+                    applicationRole = new() { Name = "User" };
                     identityResult = await _roleManager.CreateAsync(applicationRole);
                     if (!identityResult.Succeeded)
                     {
@@ -97,7 +97,7 @@ namespace ThriftStore.Business.UserModule.Concrete
                 }
 
                 //Add the newly cfreated User to the role
-                identityResult = await _userManager.AddToRoleAsync(user, model.Role);
+                identityResult = await _userManager.AddToRoleAsync(user, isAdmin ? "Admin" : "User");
                 if (!identityResult.Succeeded)
                 {
                     result.Message = identityResult.Errors.Select(x => x.Description).FirstOrDefault();

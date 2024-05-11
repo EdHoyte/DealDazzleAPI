@@ -10,7 +10,7 @@ namespace ThriftStore.Business.UserModule.Interface
 {
     public interface IUserAccountService
     {
-        Task<ApiResult<CreateUserAccountResponseDto>> CreateUserAccount(CreateUserAccountDto model); 
+        Task<ApiResult<CreateUserAccountResponseDto>> CreateUserAccount(CreateUserAccountDto model, bool isAdmin); 
         Task<ApiResult<MessageResponse>> LoginUserAccount (LoginUserAccountDto model);
         Task<ApiResult<MessageResponse>> LogoutUserAccount();
         string UserId { get; }
