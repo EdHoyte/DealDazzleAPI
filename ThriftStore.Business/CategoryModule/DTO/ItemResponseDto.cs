@@ -11,7 +11,7 @@ namespace ThriftStore.Business.CategoryModule.DTO
         public string ItemId { get; set; }  
         public string ItemName { get; set; }
         public string Description { get; set; }
-        public decimal Price {  get; set; }
+        public decimal? Price {  get; set; }
         public string UploadedBy { get; set; }
 
     }

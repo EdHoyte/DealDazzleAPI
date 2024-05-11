@@ -12,7 +12,7 @@ namespace ThriftStore.Data.Domain
     public class Item:BaseObject
     {
         public string ItemName { get; set; }
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
         public string Description { get; set; }
         [ForeignKey("SubCategoryId")]
         public long SubCategoryId { get; set; }

@@ -19,7 +19,6 @@ using ThriftStore.Data;
 using ThriftStore.Data.Domain;
 using ThriftStore.Data.Domain.Items;
 using ThriftStore.Data.Domain.Users;
-using ThriftStore.Data.Migrations;
 
 namespace ThriftStore.Business.CategoryModule.Concrete
 {
