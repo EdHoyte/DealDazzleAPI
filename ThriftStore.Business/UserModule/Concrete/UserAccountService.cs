@@ -121,34 +121,44 @@ namespace ThriftStore.Business.UserModule.Concrete
 
         public async Task<ApiResult<MessageResponse>> LoginUserAccount(LoginUserAccountDto model)
         {
-            ApiResult<MessageResponse> response = new();
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            ApiResult<MessageResponse> response = new() { StatusCode = System.Net.HttpStatusCode.BadRequest, Result = new() };
+            try
             {
-                response.Message = "Email does not exist";
-                return response;
-            }
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    response.Message = "Email does not exist";
+                    return response;
+                }
 
-            var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
+                var signInResult = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
-            if (signInResult.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, model.RememberMe);
-                response.IsSuccessful = true;
-                response.Message = "Login successful";
-                return response;
+                if (signInResult.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, model.RememberMe);
+                    response.IsSuccessful = true;
+                    response.Message = "Login successful";
+                    return response;
+                }
+                if (signInResult.IsNotAllowed)
+                {
+                    response.Message = "Sign in not allowed";
+                    return response;
+                }
+                if (signInResult.IsLockedOut)
+                {
+                    response.Message = "You have been locked out, please try again later";
+                    return response;
+                }
+                response.Message = "Unkown error";
             }
-            if (signInResult.IsNotAllowed)
+            catch (Exception ex)
             {
-                response.Message = "Sign in not allowed";
-                return response;
+                _logger.LogError(ex.Message, ex);
+                response.Message = "An error occurred";
+                response.StatusCode = System.Net.HttpStatusCode.InternalServerError;
             }
-            if (signInResult.IsLockedOut)
-            {
-                response.Message = "You have been locked out, please try again later";
-                return response;
-            }
-            response.Message = "Unkown error";
+            
             return response;
         }
 
